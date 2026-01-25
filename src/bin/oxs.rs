@@ -41,7 +41,7 @@ impl fmt::Display for Cell {
 
 struct Game {
     board: [[Cell; 3]; 3],
-    turn: i32,
+    turn: usize,
 }
 
 impl Game {
@@ -133,18 +133,10 @@ fn main() {
             game.board[y][x] = Cell::O;
         }
         game.show_board();
-        match game.check_horizontal_and_vertical_matches() {
-            Some(Player::X) => {
-                println!("Player X is the winner!");
-                break;
-            }
-            Some(Player::O) => {
-                println!("Player O is the winner!");
-                break;
-            }
-            None => {}
-        };
-        match game.check_diagonal_matches() {
+        match game
+            .check_horizontal_and_vertical_matches()
+            .or_else(|| game.check_diagonal_matches())
+        {
             Some(Player::X) => {
                 println!("Player X is the winner!");
                 break;
@@ -158,7 +150,8 @@ fn main() {
 
         game.turn += 1;
         if game.turn == 9 {
-            println!("The game is a draw! you are both losers!!!")
+            println!("The game is a draw! you are both losers!!!");
+            break;
         }
     }
 }
