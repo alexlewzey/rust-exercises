@@ -1,15 +1,11 @@
 use std::fs;
 use std::path::PathBuf;
 
-
-fn turn_left() {
-    
-}
+fn turn_left() {}
 
 fn turn_right(dail: i32, amount: i32) -> i32 {
     (dail + amount) % 100
 }
-
 
 fn main() {
     let root = env!("CARGO_MANIFEST_DIR");
@@ -29,18 +25,13 @@ fn main() {
         // println!("{} {}", direction, amount_num);
 
         // if direction == "L" {
-            
+
         // }
         if amount_num > max_value {
             max_value = amount_num
         }
     }
-
-    
-
 }
-
-
 
 mod tests {
     use super::*;
@@ -51,14 +42,14 @@ mod tests {
         let expected = 50;
         assert_eq!(expected, result);
     }
-        
+
     #[test]
     fn turn_right_to_gt_99() {
         let result = turn_right(95, 60);
         let expected = 55;
         assert_eq!(expected, result);
     }
-    
+
     #[test]
     fn turn_right_to_zero() {
         let result = turn_right(52, 48);

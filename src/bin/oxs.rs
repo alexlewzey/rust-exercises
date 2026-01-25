@@ -15,8 +15,6 @@ fn get_user_input() -> Result<(usize, usize), std::num::ParseIntError> {
     Ok((x, y))
 }
 
-
-
 #[derive(Copy, Clone, PartialEq)]
 enum Cell {
     X,
@@ -29,7 +27,6 @@ enum Player {
     X,
     O,
 }
-
 
 impl fmt::Display for Cell {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -51,7 +48,7 @@ impl Game {
     fn new() -> Self {
         Game {
             board: [[Cell::Empty; 3]; 3],
-            turn: 0
+            turn: 0,
         }
     }
 
@@ -75,16 +72,16 @@ impl Game {
                 vertical[y_idx] = self.board[y_idx][x_idx];
             }
             if horizontal.iter().all(|&x| x == Cell::X) || vertical.iter().all(|&x| x == Cell::X) {
-                return Some(Player::X)
-                
-            } else if horizontal.iter().all(|&x| x == Cell::O) || vertical.iter().all(|&x| x == Cell::O) {
-                return Some(Player::O)
-                
+                return Some(Player::X);
+            } else if horizontal.iter().all(|&x| x == Cell::O)
+                || vertical.iter().all(|&x| x == Cell::O)
+            {
+                return Some(Player::O);
             }
         }
         None
     }
-    
+
     fn check_diagonal_matches(&self) -> Option<Player> {
         let mut major_diagonal = [Cell::Empty; 3];
         let mut minor_diagonal = [Cell::Empty; 3];
@@ -92,16 +89,18 @@ impl Game {
             major_diagonal[idx] = self.board[idx][idx];
             minor_diagonal[idx] = self.board[idx][2 - idx];
         }
-        if major_diagonal.iter().all(|&x| x == Cell::X) || minor_diagonal.iter().all(|&x| x == Cell::X) {
-            return Some(Player::X)
-        } else if major_diagonal.iter().all(|&x| x == Cell::O) || minor_diagonal.iter().all(|&x| x == Cell::O) {
-            return Some(Player::O)
+        if major_diagonal.iter().all(|&x| x == Cell::X)
+            || minor_diagonal.iter().all(|&x| x == Cell::X)
+        {
+            return Some(Player::X);
+        } else if major_diagonal.iter().all(|&x| x == Cell::O)
+            || minor_diagonal.iter().all(|&x| x == Cell::O)
+        {
+            return Some(Player::O);
         }
         None
     }
 }
-
-
 
 fn main() {
     let mut game = Game::new();
@@ -135,28 +134,26 @@ fn main() {
         }
         game.show_board();
         match game.check_horizontal_and_vertical_matches() {
-            Some(Player::X) =>  {
+            Some(Player::X) => {
                 println!("Player X is the winner!");
                 break;
-            },
-            Some(Player::O) =>  {
+            }
+            Some(Player::O) => {
                 println!("Player O is the winner!");
                 break;
-            },
+            }
             None => {}
-            
         };
         match game.check_diagonal_matches() {
-            Some(Player::X) =>  {
+            Some(Player::X) => {
                 println!("Player X is the winner!");
                 break;
-            },
-            Some(Player::O) =>  {
+            }
+            Some(Player::O) => {
                 println!("Player O is the winner!");
                 break;
-            },
+            }
             None => {}
-            
         };
 
         game.turn += 1;
@@ -166,16 +163,11 @@ fn main() {
     }
 }
 
-
 #[test]
 fn horizontal_winning_condition() {
-    let game = Game{
-        board: [
-            [Cell::X; 3],
-            [Cell::Empty; 3],
-            [Cell::Empty; 3],
-        ],
-        turn: 0
+    let game = Game {
+        board: [[Cell::X; 3], [Cell::Empty; 3], [Cell::Empty; 3]],
+        turn: 0,
     };
     let result = game.check_horizontal_and_vertical_matches();
     assert_eq!(result, Some(Player::X));
@@ -183,45 +175,41 @@ fn horizontal_winning_condition() {
 
 #[test]
 fn vertical_winning_condition() {
-    let game = Game{
+    let game = Game {
         board: [
             [Cell::Empty, Cell::Empty, Cell::O],
             [Cell::Empty, Cell::Empty, Cell::O],
             [Cell::Empty, Cell::Empty, Cell::O],
         ],
-        turn: 0
+        turn: 0,
     };
     let result = game.check_horizontal_and_vertical_matches();
     assert_eq!(result, Some(Player::O))
 }
 
-
 #[test]
 fn diagonal_winning_condition() {
-    let game = Game{
+    let game = Game {
         board: [
             [Cell::X, Cell::Empty, Cell::Empty],
             [Cell::Empty, Cell::X, Cell::Empty],
             [Cell::Empty, Cell::Empty, Cell::X],
         ],
-        turn: 0
+        turn: 0,
     };
     let result = game.check_diagonal_matches();
     assert_eq!(result, Some(Player::X))
 }
 
-
 #[test]
 fn no_winning_condition() {
-    let game = Game{
+    let game = Game {
         board: [[Cell::Empty; 3]; 3],
-        turn: 0
+        turn: 0,
     };
     let result = game.check_horizontal_and_vertical_matches();
     assert_eq!(result, None);
-    
+
     let result = game.check_diagonal_matches();
     assert_eq!(result, None)
 }
-
-
