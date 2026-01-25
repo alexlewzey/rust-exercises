@@ -24,6 +24,7 @@ enum Cell {
     Empty,
 }
 
+#[derive(Debug, PartialEq)]
 enum Player {
     X,
     O,
@@ -47,6 +48,13 @@ struct Game {
 }
 
 impl Game {
+    fn new() -> Self {
+        Game {
+            board: [[Cell::Empty; 3]; 3],
+            turn: 0
+        }
+    }
+
     fn show_board(&self) {
         println!("-------");
         for row in self.board {
@@ -96,10 +104,7 @@ impl Game {
 
 
 fn main() {
-    let mut game = Game{
-        board: [[Cell::Empty; 3]; 3],
-        turn: 0
-    };
+    let mut game = Game::new();
     println!("Lets play noughts and crosses!\n");
     println!(
         "Take turns entering coordinates until someone wins. Valid coordinates are in range [0, 2].\n"
@@ -160,4 +165,63 @@ fn main() {
         }
     }
 }
+
+
+#[test]
+fn horizontal_winning_condition() {
+    let game = Game{
+        board: [
+            [Cell::X; 3],
+            [Cell::Empty; 3],
+            [Cell::Empty; 3],
+        ],
+        turn: 0
+    };
+    let result = game.check_horizontal_and_vertical_matches();
+    assert_eq!(result, Some(Player::X));
+}
+
+#[test]
+fn vertical_winning_condition() {
+    let game = Game{
+        board: [
+            [Cell::Empty, Cell::Empty, Cell::O],
+            [Cell::Empty, Cell::Empty, Cell::O],
+            [Cell::Empty, Cell::Empty, Cell::O],
+        ],
+        turn: 0
+    };
+    let result = game.check_horizontal_and_vertical_matches();
+    assert_eq!(result, Some(Player::O))
+}
+
+
+#[test]
+fn diagonal_winning_condition() {
+    let game = Game{
+        board: [
+            [Cell::X, Cell::Empty, Cell::Empty],
+            [Cell::Empty, Cell::X, Cell::Empty],
+            [Cell::Empty, Cell::Empty, Cell::X],
+        ],
+        turn: 0
+    };
+    let result = game.check_diagonal_matches();
+    assert_eq!(result, Some(Player::X))
+}
+
+
+#[test]
+fn no_winning_condition() {
+    let game = Game{
+        board: [[Cell::Empty; 3]; 3],
+        turn: 0
+    };
+    let result = game.check_horizontal_and_vertical_matches();
+    assert_eq!(result, None);
+    
+    let result = game.check_diagonal_matches();
+    assert_eq!(result, None)
+}
+
 
