@@ -28,8 +28,11 @@ struct SnakeGame {
 impl SnakeGame {
     fn new(width: i32, height: i32) -> Self {
         let mut snake = VecDeque::new();
-        snake.push_back(Point { x: width / 2, y: height / 2 });
-        
+        snake.push_back(Point {
+            x: width / 2,
+            y: height / 2,
+        });
+
         SnakeGame {
             width,
             height,
@@ -43,9 +46,11 @@ impl SnakeGame {
     fn draw(&self) {
         // Clear screen using ANSI escape codes
         print!("\x1B[2J\x1B[1;1H");
-        
+
         // Draw top border
-        for _ in 0..self.width + 2 { print!("#"); }
+        for _ in 0..self.width + 2 {
+            print!("#");
+        }
         println!();
 
         for y in 0..self.height {
@@ -68,7 +73,9 @@ impl SnakeGame {
         }
 
         // Draw bottom border
-        for _ in 0..self.width + 2 { print!("#"); }
+        for _ in 0..self.width + 2 {
+            print!("#");
+        }
         println!();
     }
 
@@ -84,14 +91,15 @@ impl SnakeGame {
         }
 
         // Check collisions with walls
-        if new_head.x < 0 || new_head.x >= self.width || new_head.y < 0 || new_head.y >= self.height {
+        if new_head.x < 0 || new_head.x >= self.width || new_head.y < 0 || new_head.y >= self.height
+        {
             self.game_over = true;
             return;
         }
 
         // Check collisions with self
         if self.snake.contains(&new_head) {
-            // If we are just chasing our tail (which will move), it's fine, 
+            // If we are just chasing our tail (which will move), it's fine,
             // but simple logic says if new_head exists in current snake, crash.
             // Technically if new_head == tail and we don't eat, tail moves, so it's safe.
             // But for simplicity, let's just crash if we hit any part of the current body.
@@ -109,7 +117,7 @@ impl SnakeGame {
             let start = SystemTime::now();
             let since_the_epoch = start.duration_since(UNIX_EPOCH).unwrap();
             let nanos = since_the_epoch.subsec_nanos();
-            
+
             // Simple LCG-like behavior or just use nanos
             self.food = Point {
                 x: (nanos as i32 % self.width).abs(),

@@ -1,4 +1,4 @@
-// Advent of Code 2025 - Day 1 - https://adventofcode.com/2025/day/1
+// Advent of Code 2025 - Day 1 - Part 1 - https://adventofcode.com/2025/day/1
 use std::fs;
 use std::path::PathBuf;
 
@@ -9,8 +9,6 @@ fn turn_right(dail: i32, amount: i32) -> i32 {
 fn turn_left(dial: i32, amount: i32) -> i32 {
     ((dial - amount) % 100 + 100) % 100
 }
-
-
 
 fn main() {
     let root = env!("CARGO_MANIFEST_DIR");
@@ -36,11 +34,12 @@ fn main() {
         if dail == 0 {
             n_zero += 1
         }
-        println!("line: {} direction: {} amount_num: {} dail: {}", line, direction, amount_num, dail);
+        println!(
+            "line: {} direction: {} amount_num: {} dail: {}",
+            line, direction, amount_num, dail
+        );
     }
     println!("Secret code: {}", n_zero)
-
-
 }
 
 mod tests {
@@ -88,7 +87,6 @@ mod tests {
         assert_eq!(expected, result);
     }
 
-
     #[test]
     fn turn_left_full_to_zero() {
         let result = turn_left(10, 110);
@@ -96,4 +94,3 @@ mod tests {
         assert_eq!(expected, result);
     }
 }
-
