@@ -48,6 +48,3 @@ fn test_max_jolt() {
         assert_eq!(max_jolt(row), result)
     }
 }
-
-// 17374
-// 17554
